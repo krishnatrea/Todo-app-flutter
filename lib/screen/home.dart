@@ -30,7 +30,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Tododata data = Tododata(id: Uuid().v1(), title: "kon marega ", description: "kispe", catagory: "tujhpe", done: 0, deleted: 0, createdAt: DateTime.now().subtract(Duration(days: 2)));
+          Tododata data = Tododata(id: Uuid().v1(), title: "New", description: "todo", catagory: "non", done: 0, deleted: 0, createdAt: DateTime.now().subtract(Duration(days: 2)));
           BlocProvider.of<TodoBloc>(context).add(AddtodoEvent(tododata: data));
         },
       ),
