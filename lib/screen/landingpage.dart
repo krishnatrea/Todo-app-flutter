@@ -21,44 +21,61 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
+    DateTime date;
     return Column(
-          children: [
-            customAppbar(),
-            SizedBox(
-              height: 496.h,
-              child: Container(
-                color: Colors.white,
-                child: BlocBuilder<TodoBloc, TodoState>(
+      children: [
+        customAppbar(),
+        Expanded(
+          child: SizedBox(
+            height: 496.h,
+            child: Container(
+              color: Colors.white,
+              child: BlocBuilder<TodoBloc, TodoState>(
                   buildWhen: (previous, current) => true,
                   builder: (context, state) {
-                    if(state is TodoInitialState){
-                      return const  Center(child: CircularProgressIndicator());
-                    }else if(state is TodoListState ){
-                    List<Tododata>  todolist = [] ;
-                    todolist = state.todolist..sort((a,b) => a.createdAt.compareTo(b.createdAt));
-                    return todolist.isNotEmpty ? ListView(
-                     children:   getList(todolist),
-                     
-                    ) : const NewPage();
-                  }
-                  return Container();
-                }
-                ),
-              ),
+                    if (state is TodoInitialState) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is TodoListState) {
+                      List<Tododata> todolist = [];
+                      todolist = state.todolist
+                        ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+                      List<Widget> listtiles = getList(todolist);
+                      return listtiles.isNotEmpty
+                          ? ListView(
+                              children: listtiles,
+                            )
+                          : const NewPage();
+                    }
+                    return Container();
+                  }),
             ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
   }
 
-  List<Widget> getList(List<Tododata> todolist){
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    }
+    return 'Good Evening';
+  }
+
+  List<Widget> getList(List<Tododata> todolist) {
     List<Widget> widgetlist = [];
-    for (int i = 0; i < todolist.length ; i++) {
-      widgetlist.add(TodoListTile(tododata: todolist[i]));
+    for (int i = 0; i < todolist.length; i++) {
+      if (DateTime.now().day == todolist[i].createdAt.day) {
+        widgetlist.add(TodoListTile(tododata: todolist[i]));
+      }
     }
     return widgetlist;
   }
 
-    Column customAppbar() {
+  Column customAppbar() {
     return Column(
       children: [
         SizedBox(
@@ -71,8 +88,7 @@ class _LandingPageState extends State<LandingPage> {
                 children: [
                   SizedBox(
                     width: 190.w,
-                    child: Text('Good morning Harshit',
-                        style: longtext, maxLines: 2),
+                    child: Text(greeting()+"\nHarshit Sharma", style: longtext, maxLines: 2),
                   ),
                   SizedBox(
                     width: 90.w,
