@@ -21,6 +21,7 @@ dependencies:
   equatable: 
   flutter_screenutil: 
   google_fonts: 
+  auto_size_text:
   date_format: 
   dart_date: 
   uuid: ^3.0.5
